@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\ParentCategory;
 use Illuminate\Support\Str;
 use File;
 
@@ -16,20 +17,17 @@ class AdminCategoryController extends Controller
     }
 
     public function create(){
-        return view('admin.category.create');
+        $parentCategories = ParentCategory::all();
+        return view('admin.category.create',compact('parentCategories'));
     }
 
     public function store(Request $request){
         $request->validate([
+            "parent_category"=>['required',"exists:parent_categories,id"],
             "name"=>['required'],
-            "image"=>['required','mimes:png,jpg,jpeg']
         ]);
-        // store image
-        // $file = $request->file('image');
-        // $file_name = uniqid().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('assets/image/categories'),$file_name);
-
         $category=Category::create([
+            "parent_category_id"=>$request->parent_category,
             'name'=>$request->name,
             "slug"=>Str::slug($request->name),
         ]);
@@ -42,10 +40,10 @@ class AdminCategoryController extends Controller
 
     public function update(Request $request,Category $category){
         $request->validate([
-            'name'=>['required','unique:users,categories'],
+            'name'=>['required'],
         ]);
 
-        // check request has image or not 
+        // check request has image or not
         // if(!$request->file('image')){
         //     $file_name = $category->image;
         // }else{

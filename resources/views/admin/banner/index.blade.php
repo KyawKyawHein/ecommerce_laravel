@@ -1,32 +1,35 @@
-@props(['categories'])
+@props(['banners'])
 <x-admin.layout>
-    <div class="">
-        <h3 class="text-primary">All Categories</h3>
+      <div class="">
+        <h3 class="text-primary">All Banners</h3>
         @if (session('success'))
             <p class="alert alert-success">{{session('success')}}</p>
         @endif
         @if (session('error'))
             <p class="alert alert-success">{{session('error')}}</p>
         @endif
-        <a href="{{route('admin.category.create')}}" class="btn btn-primary">Add Category</a>
+        <a href="{{route('admin.banners.create')}}" class="btn btn-primary">Add Banner</a>
         <table class="table">
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Parent Category</th>
+                <th scope="col">Image</th>
+                <th scope="col">Expire Date</th>
+                <th scope="col">Link</th>
+                <th scope="col">Status</th>
                 <th scope="col">Control</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($categories as $key=>$category)
+                @foreach ($banners as $key=>$banner)
                     <tr>
                         <th scope="row">{{$key+1}}</th>
-                        <td>{{$category->name}}</td>
-                        <td>{{$category->parent_category->name}}</td>
+                        <td><img src="{{asset("assets/image/banners/$banner->image")}}" width="150px" alt=""></td>
+                        <td>{{$banner->expire_date}}</td>
+                        <td><a href="{{$banner->url}}">{{$banner->url}}</a></td>
+                        <td class="fw-bold {{ $banner->status=="Active"?'text-primary':'text-danger' }}">{{ $banner->status }}</td>
                         <td>
-                            <a href="{{route('admin.category.edit',$category->slug)}}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{route('admin.category.destroy',$category->slug)}}" method="post" class="d-inline-block">
+                            <form action="{{route('admin.banners.destroy',$banner->id)}}" method="post" class="d-inline-block">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-danger btn-sm">Delete</button>
@@ -37,7 +40,7 @@
             </tbody>
         </table>
         <div class="text-end">
-            {{ $categories->links() }}
+            {{ $banners->links() }}
         </div>
     </div>
 </x-admin.layout>

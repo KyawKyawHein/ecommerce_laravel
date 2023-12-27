@@ -12,7 +12,7 @@ class AdminOrderController extends Controller
         $orders = Order::latest('id')->with('product')->paginate(5);
         return view('admin.order.index',compact('orders'));
     }
-    
+
     public function makeComplete(string $id){
         $order = Order::find($id);
         $order->update([

@@ -1,32 +1,30 @@
-@props(['categories'])
+@props(['parentCategories'])
 <x-admin.layout>
     <div class="">
-        <h3 class="text-primary">All Categories</h3>
+        <h3 class="text-primary">All Parent Categories</h3>
         @if (session('success'))
             <p class="alert alert-success">{{session('success')}}</p>
         @endif
         @if (session('error'))
             <p class="alert alert-success">{{session('error')}}</p>
         @endif
-        <a href="{{route('admin.category.create')}}" class="btn btn-primary">Add Category</a>
+        <a href="{{route('admin.parent-categories.create')}}" class="btn btn-primary">Add Parent Category</a>
         <table class="table">
             <thead>
                 <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Parent Category</th>
                 <th scope="col">Control</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($categories as $key=>$category)
+                @foreach ($parentCategories as $key=>$category)
                     <tr>
                         <th scope="row">{{$key+1}}</th>
                         <td>{{$category->name}}</td>
-                        <td>{{$category->parent_category->name}}</td>
                         <td>
-                            <a href="{{route('admin.category.edit',$category->slug)}}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{route('admin.category.destroy',$category->slug)}}" method="post" class="d-inline-block">
+                            <a href="{{route('admin.parent-categories.edit',$category->id)}}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{route('admin.parent-categories.destroy',$category->id)}}" method="post" class="d-inline-block">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-danger btn-sm">Delete</button>
@@ -37,7 +35,7 @@
             </tbody>
         </table>
         <div class="text-end">
-            {{ $categories->links() }}
+            {{ $parentCategories->links() }}
         </div>
     </div>
 </x-admin.layout>

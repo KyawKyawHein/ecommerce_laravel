@@ -20,6 +20,13 @@
                         @enderror
                     </div>
                     <div class="form-group mb-2">
+                        <label for="address">Your address</label>
+                        <textarea name="address" id="address" cols="30" rows="5" class="form-control"></textarea>
+                        @error('address')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-2">
                         <label for="password">Password</label>
                         <input type="password" name="password" class="form-control" id="password" placeholder="Password">
                         @error('password')

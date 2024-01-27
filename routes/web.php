@@ -38,10 +38,13 @@ Route::get('/addtocart',[CartController::class,'index'])->name('addToCart.index'
 Route::post('/addtocart',[CartController::class,'addToCart'])->name('addToCart');
 Route::post('/addtocart/increase-quantity',[CartController::class,'increaseQuantity'])->name('addToCart.increaseQuantity');
 Route::post('/addtocart/decrease-quantity',[CartController::class,'decreaseQuantity'])->name('addToCart.decreaseQuantity');
-Route::post('/cart/removeProduct',[CartController::class,'removeProduct'])->name('cart.removeProduct');
-    //Billing
-Route::get('/billing',[PageController::class,'billing'])->name('billing');
-Route::post('/billing',[PageController::class,'billing'])->name('postBilling');
+ Route::post('/cart/removeProduct',[CartController::class,'removeProduct'])->name('cart.removeProduct');
+    //Account Setting
+Route::get('account-setting',[PageController::class, "accountDetail"])->name('accountDetail');
+Route::get('change-info', [PageController::class, "changeInfo"])->name( 'changeInfo');
+Route::post('change-info', [PageController::class, "postChangeInfo"])->name( 'postChangeInfo');
+Route::get('change-password', [PageController::class, "changePassword"])->name( 'changePassword');
+Route::post('change-password', [PageController::class, "postChangePassword"])->name('postChangePassword');
     //Order
 Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
 Route::post('/addOrder',[OrderController::class,'addOrder'])->name('addOrder');

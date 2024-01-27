@@ -15,7 +15,8 @@ class AuthController extends Controller
         $formData = $request->validate([
             "name"=>['required'],
             "email"=>['required','email','unique:users,email'],
-            "password"=>['required','confirmed']
+            "password"=>['required','confirmed'],
+            "address"=>['required','string']
         ]);
         $user  = User::create($formData);
         return redirect()->route('login')->with('success',"Register successfully.Please login with that account.");
@@ -32,6 +33,9 @@ class AuthController extends Controller
         if(!Auth::attempt($formData)){
             return redirect()->back()->with('error',"Login fail.");
         }else{
+            if(auth()->user()->isAdmin){
+                return redirect()->route('admin.dashboard')->with('success','Welcome');
+            }
             return redirect()->route('home')->with('success',"Welcome");
         }
     }

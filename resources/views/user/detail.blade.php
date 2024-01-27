@@ -14,18 +14,18 @@
             </div>
 
             <div class="col-12 col-md-10">
-                <div class="d-block p-3 d-md-flex justify-content-between gap-5">
+                <div class="d-block p-3 d-lg-flex justify-content-between gap-5">
                     <div class="">
                         @if (isset($product->image))
-                            <img src="{{asset('assets/image/products/'.$product->image)}}" class="rounded" width="300px" alt="">
+                            <img src="{{asset('assets/image/products/'.$product->image)}}" class="rounded detail-img" alt="">
                         @else
                             <img src="{{asset('assets/product_no_img.jpg')}}" alt="" class="detail-img rounded">
                         @endif
                     </div>
                     <div class="">
-                        <h3 class="text-primary">{{$product->name}}</h3>
+                        <h3 class="text-primary product-name">{{$product->name}}</h3>
                         <p class="">{{$product->description}}</p>
-                        <div class="">
+                        <div class="product-quantity">
                             <h5>Quantity</h5>
                             <div class="d-flex">
                                 <button id="addQuantity" class="btn border border-black rounded-0 fw-bold">+</button>
@@ -58,16 +58,9 @@
                 @if ($randomProducts->count() >0)
                     <div class="related mt-4">
                         <h5 class="mb-4">Related with {{ $product->category->name }}</h5>
-                        <div class="d-flex gap-2 flex-nowrap">
+                        <div class="d-block d-md-flex gap-2 flex-nowrap">
                             @foreach ($randomProducts as $randomProduct)
-                                <a href="{{route('product.show',$randomProduct->slug)}}" class="text-decoration-none text-dark">
-                                    <div class="card show-card p-0">
-                                        <div class="card-body p-2">
-                                            <img src="{{ asset('assets/image/products/'.$randomProduct->image) }}" class="main-img-card rounded" alt="">
-                                            <p class="m-0 mt-2 text-center">{{ $randomProduct->name }}</p>
-                                        </div>
-                                    </div>
-                                </a>
+                                <x-user.product-card :product="$randomProduct" />
                             @endforeach
                         </div>
                     </div>
@@ -78,8 +71,8 @@
         </div>
     </div>
     <x-slot:script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js" integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
             $(document).ready(function(){
@@ -135,7 +128,7 @@
                         .then(({data})=>{
                             console.log(data);
                             $("#textAlert").text("Products is added.");
-                            $('.cart-item-count').text(data.cartCount);
+                            $('#cartItemCount').text(data.cartCount);
                         })
                         .catch((error)=>console.log(error));
                     }
@@ -148,6 +141,18 @@
                 @auth
                     if(selectedQuantity <1){
                         alert('Please add quantity first.');
+                    }else{
+                        let data = {
+                            product_id : {{ $product->id }},
+                            quantity : parseInt($('#quantity').text())
+                        };
+                        axios.post("{{ route('addToCart') }}",data)
+                        .then(({data})=>{
+                            console.log(data);
+                            $('#cartItemCount').text(data.cartCount);
+                            window.location.href = "{{ route('addToCart') }}"
+                        })
+                        .catch((error)=>console.log(error));
                     }
                 @else
                     window.location.href = '{{ route('login') }}';

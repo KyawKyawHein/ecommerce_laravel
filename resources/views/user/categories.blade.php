@@ -12,9 +12,9 @@
             </div>
             <div class="col-12">
                 {{-- <h1 class="fw-bold text-orange my-3">Categories</h1> --}}
-                <div class="d-flex flex-wrap gap-4">
+                <div class="row justify-content-center">
                 @foreach($categories as $category)
-                    <a href="{{ route('productsByCategory',['parentCategory'=>$category['category']->parent_category->slug,'category'=>$category['category']->slug]) }}" class="text-decoration-none">
+                    <a href="{{ route('productsByCategory',['parentCategory'=>$category['category']->parent_category->slug,'category'=>$category['category']->slug]) }}" class="text-decoration-none col-12 col-md-4 col-lg-3">
                         <div class="card show-card p-0">
                             <div class="card-body p-2">
                                 @if ($category['randomPd'])

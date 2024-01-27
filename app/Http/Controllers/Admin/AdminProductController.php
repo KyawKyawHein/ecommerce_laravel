@@ -9,7 +9,7 @@ use App\Models\Category;
 use App\Models\ParentCategory;
 use Illuminate\Support\Str;
 use App\Http\Requests\StoreAdminProductRequest;
-use File;
+use Illuminate\Support\Facades\File;
 
 class AdminProductController extends Controller
 {

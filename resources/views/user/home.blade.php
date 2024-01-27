@@ -1,15 +1,16 @@
 @props(['categoriesWithRandomProduct','products','banners'])
 <x-user.layout>
     <div class="container-fluid container-md">
-        <div class="row justify-content-center" id="category">
+        <div class="row justify-content-center">
             <div class="col-12 ">
-                  @if(session('success'))
+                @if(session('success'))
                     <div class="alert alert-success">{{session('success')}}</div>
                 @endif
                 @if(session('error'))
                     <div class="alert alert-danger">{{session('error')}}</div>
                 @endif
 
+                {{-- carousel  --}}
                 <div id="carouselExampleIndicators" class="carousel slide">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -33,8 +34,9 @@
                     </button>
                 </div>
 
-                <h5 class="mt-3">Categories</h5>
-                <div class="d-flex flex-wrap gap-2">
+                {{-- categories  --}}
+                <h5 class="mt-3 d-none d-md-block">Categories</h5>
+                <div class="d-none d-md-flex flex-wrap gap-2">
                     @foreach ($categoriesWithRandomProduct as $category)
                         <a href="{{ route('productsByCategory',['parentCategory'=>$category['category']->parent_category->slug,'category'=>$category['category']->slug]) }}" class="text-decoration-none">
                             <div class="card category-card p-2 px-3">
@@ -44,13 +46,15 @@
                                         @else
                                         <img src="{{ asset('assets/image/products/65826c42328d4.png') }}" width="100px" height="100px" class="rounded" alt="">
                                     @endif
-                                    <p class="m-0 mt-2 text-center">{{ $category['category']->name }}</p>
+                                    <small class="m-0 mt-2 text-center">{{ $category['category']->name }}</small>
                                 </div>
                             </div>
                         </a>
                     @endforeach
                 </div>
             </div>
+
+            {{-- products  --}}
             <div class="col-12 mt-5 d-flex flex-column fw-bold justify-content-center mb-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5>Just For You</h5>
@@ -67,29 +71,15 @@
                         <h3 class="text-center text-danger">Not found.</p>
                     @endif
                 @endif
-                <div class="d-flex flex-wrap gap-4">
-                @foreach($products as $product)
-                    <a href="{{route('product.show',$product->slug)}}" class="text-decoration-none text-dark">
-                        <div class="card show-card p-0">
-                            <div class="card-body p-2">
-                                @if (isset($product->image))
-                                    <img src="{{asset('assets/image/products/'.$product->image)}}" class="main-img-card rounded" alt="">
-                                @else
-                                    <img src="{{asset('assets/product_no_img.jpg')}}" alt="" class="main-img-card rounded">
-                                @endif
-                                    <p class="">{{$product->name}}</p>
-                                <b class="text-primary">{{$product->price}}MMK</b>
-                            </div>
-                        </div>
-                    </a>
-                @endforeach
+                <div class="row justify-content-center">
+                        @foreach($products as $product)
+                            <x-user.product-card :product="$product" />
+                        @endforeach
                 </div>
             </div>
         </div>
     </div>
     <x-slot:script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script>
             var myCarousel = document.querySelector('#carousel')
             var carousel = new bootstrap.Carousel(myCarousel)

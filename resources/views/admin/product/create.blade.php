@@ -67,7 +67,7 @@
             </div>
         </form>
     </div>
-    
+
      <x-slot:script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js" integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -75,7 +75,7 @@
             $(document).ready(function(){
                 $('#childCategoryContainer').hide();
 
-                // handle change event on the parent category 
+                // handle change event on the parent category
                 $('#parentCategory').change(function(){
                     let selectedValue = $(this).val();
 
@@ -84,9 +84,8 @@
                         parent_category_id:selectedValue
                     })
                     .then(({data})=>{
-                        // console.log(data);
                         $('#childCategory').empty();
-                       
+
                         Object.keys(data).map(key=>{
                             $('#childCategory').append(`<option value="${data[key].id}">${data[key].name}</option>`)
                         })

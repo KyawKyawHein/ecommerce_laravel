@@ -71,8 +71,10 @@ class CartController extends Controller
         }else{
             auth()->user()->products()->detach($request->product_id);
             $totalAmount  = auth()->user()->products->sum(fn($p)=>($p->price*$p->pivot->quantity));
+            $cartProductQuantity = auth()->user()->products->count();
             return response([
-                'totalAmount'=>$totalAmount
+                'totalAmount'=>$totalAmount,
+                'cartProductQuantity'=>$cartProductQuantity
             ]);
         }
     }

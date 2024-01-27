@@ -9,17 +9,18 @@
             <p class="alert alert-success">{{session('error')}}</p>
         @endif
         <a href="{{route('admin.category.create')}}" class="btn btn-primary">Add Category</a>
-        <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Parent Category</th>
-                <th scope="col">Control</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($categories as $key=>$category)
+        @if (count($categories)>0)
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Parent Category</th>
+                        <th scope="col">Control</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($categories as $key=>$category)
                     <tr>
                         <th scope="row">{{$key+1}}</th>
                         <td>{{$category->name}}</td>
@@ -33,11 +34,14 @@
                             </form>
                         </td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="text-end">
-            {{ $categories->links() }}
-        </div>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="text-end">
+                {{ $categories->links() }}
+            </div>
+        @else
+        <h2 class="mt-5 text-center text-danger">There is no categories.</h2>
+        @endif
     </div>
 </x-admin.layout>
